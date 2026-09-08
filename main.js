@@ -16,8 +16,8 @@ const SITE = {
   advisor:'江晓东'
 };
 
-/* —— 首屏背景：把新照片命名为 hero-bg.jpg 放入 img/ 即自动生效 —— */
-const HERO = { file: 'hero-bg.jpg' };
+/* —— 首屏背景：图片已就位（网站图片/24节气网页背景图.png），默认启用 —— */
+const HERO = { file: 'hero-bg.png' };
 
 /* —— 相册照片清单 —— */
 const GALLERIES = {
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const probe = new Image();
     probe.onload = function () {
       heroEl.style.backgroundImage =
-        'linear-gradient(rgba(24,20,12,.45), rgba(24,20,12,.62)), url(img/' + HERO.file + ')';
+        'linear-gradient(rgba(18,15,9,.32), rgba(18,15,9,.58)), url(img/' + HERO.file + ')';
       heroEl.classList.add('has-photo');
     };
     probe.src = 'img/' + HERO.file;

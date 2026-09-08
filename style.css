@@ -466,3 +466,23 @@ table.kw td.note,.table-wrap .note{background:transparent !important; color:var(
   font-size:30px; color:var(--warm); opacity:.75; line-height:1}
 .prov .pr{font-size:17px}
 .prov:hover{transform:translateY(-2px); box-shadow:var(--shadow)}
+
+/* ======= v2.2：真实背景与四季实拍卡 ======= */
+
+/* 首屏：照片背景铺满，隐藏矢量山避免叠图 */
+.hero.has-photo{background-size:cover; background-position:center 30%}
+.hero.has-photo .hero-art{display:none}
+.hero.has-photo .hero-inner{padding-top:96px; padding-bottom:120px}
+
+/* 四季卡照片头部 */
+.card-photo{height:108px; margin:-26px -24px 14px; overflow:hidden;
+  border-radius:10px 10px 0 0; position:relative}
+.card-photo img{width:100%; height:100%; object-fit:cover; display:block;
+  transition:transform .45s ease}
+.card:hover .card-photo img{transform:scale(1.05)}
+.art-summer{display:flex; align-items:center; justify-content:center;
+  background:radial-gradient(circle at 26% 18%, rgba(255,214,140,.95) 0 13%, transparent 48%),
+             linear-gradient(135deg,#efc071,#d97f2b)}
+.art-summer span{font-family:var(--serif); font-size:58px; color:rgba(255,251,240,.88);
+  letter-spacing:2px; text-shadow:0 3px 12px rgba(122,60,8,.4)}
+.folk-cards .card h3{margin-top:2px}
