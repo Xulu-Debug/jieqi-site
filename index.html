@@ -31,6 +31,28 @@
 
 <!-- ======== 首屏 ======== -->
 <section class="hero" id="top">
+  <div class="hero-art" aria-hidden="true">
+    <svg viewBox="0 0 1440 500" preserveAspectRatio="xMidYMax slice">
+      <defs>
+        <linearGradient id="hgFar" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#4a6b56" stop-opacity=".42"/>
+          <stop offset="1" stop-color="#33513f" stop-opacity=".55"/>
+        </linearGradient>
+        <linearGradient id="hgMid" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#2e4b3a" stop-opacity=".60"/>
+          <stop offset="1" stop-color="#22392c" stop-opacity=".66"/>
+        </linearGradient>
+        <linearGradient id="hgNear" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#1e3227" stop-opacity=".72"/>
+          <stop offset="1" stop-color="#16241c" stop-opacity=".78"/>
+        </linearGradient>
+      </defs>
+      <circle cx="1120" cy="140" r="64" fill="#c96f2e" opacity=".50"/>
+      <path d="M0,330 C180,240 330,300 500,250 C680,195 820,265 1000,220 C1150,185 1310,215 1440,180 L1440,500 L0,500 Z" fill="url(#hgFar)"/>
+      <path d="M0,400 C200,320 420,380 640,330 C840,288 1040,350 1240,300 C1320,280 1390,290 1440,280 L1440,500 L0,500 Z" fill="url(#hgMid)"/>
+      <path d="M0,470 C260,420 520,460 780,430 C1020,404 1240,440 1440,420 L1440,500 L0,500 Z" fill="url(#hgNear)"/>
+    </svg>
+  </div>
   <div class="hero-deco" aria-hidden="true"><div class="ring"></div></div>
   <div class="hero-inner">
     <p class="eyebrow">南京信息工程大学 · 生态与应用气象学院｜节气科普 × 社区在地调查</p>
@@ -83,38 +105,65 @@
     <p class="kicker">贰 / ORIGIN —— 从何而来</p>
     <h2 class="sec-title">从一根立竿，到黄道上的 24 个刻度点</h2>
     <p class="lede">节气不是拍脑袋定的，它是被<strong>“测”</strong>出来的——而最早的量天尺，只是一根插在地上的杆子。</p>
-    <div class="mini-cards c2">
-      <article>
-        <h4>① 圭表测影：先测出“两至两分”</h4>
-        <p>正午立竿见影：一年中影子最长的一天是冬至，最短的一天是夏至；影子长短居中的两天，昼夜平分，就是春分与秋分。四个“锚点”定下后，再向中间细分。</p>
-      </article>
-      <article>
-        <h4>② 黄经定位：把轨道划成 24 份</h4>
-        <p>现行节气按“定气法”划分：太阳沿黄道（黄经）每走 15° 就是一个节气，从黄经 0° 的春分起算，清明 15°、立夏 45°、夏至 90°、立秋 135°、秋分 180°、立冬 225°、冬至 270°……周而复始。</p>
-      </article>
+    <div class="duo">
+      <div class="duo-text">
+        <div class="mini-cards c2">
+          <article>
+            <h4>圭表测影：先测出“两至两分”</h4>
+            <p>正午立竿见影：一年中影子最长的一天是冬至，最短的一天是夏至；影子长短居中的两天，昼夜平分，就是春分与秋分。四个“锚点”定下后，再向中间细分。</p>
+          </article>
+          <article>
+            <h4>黄经定位：把轨道划成 24 份</h4>
+            <p>现行节气按“定气法”划分：太阳沿黄道（黄经）每走 15° 就是一个节气，从黄经 0° 的春分起算，清明 15°、立夏 45°、夏至 90°、立秋 135°、秋分 180°、立冬 225°、冬至 270°……周而复始。</p>
+          </article>
+        </div>
+        <p class="timeline-line">西汉《淮南子》已完整记载二十四节气名称 → 汉代《太初历》将节气纳入历法体系 → 2016 年列入人类非遗名录。</p>
+      </div>
+      <figure class="wheel">
+        <svg id="solarWheel" viewBox="0 0 340 340" role="img" aria-label="太阳黄经节气环示意图"></svg>
+        <figcaption>太阳黄经“节气环”：顺时针一圈即一年，相邻刻度相隔 15°。红点＝两分两至，绿点＝四立。</figcaption>
+      </figure>
     </div>
-    <div class="table-wrap">
-      <table class="kw">
-        <caption>二十四节气 · 太阳黄经与大致月份</caption>
-        <thead><tr><th>季节</th><th>节气（黄经）</th><th>节气（黄经）</th></tr></thead>
-        <tbody>
-          <tr><td rowspan="2">春</td><td>立春 315°｜约 2 月</td><td>雨水 330°｜约 2 月下</td></tr>
-          <tr><td>惊蛰 345°｜约 3 月上</td><td>春分 0°｜约 3 月下</td></tr>
-          <tr><td rowspan="2">春→夏</td><td>清明 15°｜约 4 月上</td><td>谷雨 30°｜约 4 月下</td></tr>
-          <tr><td>立夏 45°｜约 5 月上</td><td>小满 60°｜约 5 月下</td></tr>
-          <tr><td rowspan="2">夏</td><td>芒种 75°｜约 6 月上</td><td>夏至 90°｜约 6 月下</td></tr>
-          <tr><td>小暑 105°｜约 7 月上</td><td>大暑 120°｜约 7 月下</td></tr>
-          <tr><td rowspan="2">夏→秋</td><td>立秋 135°｜约 8 月上</td><td>处暑 150°｜约 8 月下</td></tr>
-          <tr><td>白露 165°｜约 9 月上</td><td>秋分 180°｜约 9 月下</td></tr>
-          <tr><td rowspan="2">秋</td><td>寒露 195°｜约 10 月上</td><td>霜降 210°｜约 10 月下</td></tr>
-          <tr><td rowspan="2">秋→冬</td><td>立冬 225°｜约 11 月上</td><td>小雪 240°｜约 11 月下</td></tr>
-          <tr><td rowspan="2">冬</td><td>大雪 255°｜约 12 月上</td><td>冬至 270°｜约 12 月下</td></tr>
-          <tr><td rowspan="2">冬→春</td><td>小寒 285°｜约 1 月上</td><td>大寒 300°｜约 1 月下</td></tr>
-          <tr><td colspan="3" class="note">注：具体日期各年相差 1–2 天；秋分恰在黄经 180°，是昼夜平分的“天文学时刻”。</td></tr>
-        </tbody>
-      </table>
+    <h3 class="sub-h">二十四节气一览 · 按四季排开</h3>
+    <div class="st-groups">
+      <div class="st-group st-sp">
+        <div class="st-head"><span>春 · 生发</span><span>六个节气</span></div>
+        <div class="st-row"><span class="nm">立春</span><span class="meta">315° · 约 2 月</span></div>
+        <div class="st-row"><span class="nm">雨水</span><span class="meta">330° · 约 2 月下</span></div>
+        <div class="st-row"><span class="nm">惊蛰</span><span class="meta">345° · 约 3 月上</span></div>
+        <div class="st-row"><span class="nm">春分</span><span class="meta">0° · 约 3 月下</span></div>
+        <div class="st-row"><span class="nm">清明</span><span class="meta">15° · 约 4 月上</span></div>
+        <div class="st-row"><span class="nm">谷雨</span><span class="meta">30° · 约 4 月下</span></div>
+      </div>
+      <div class="st-group st-su">
+        <div class="st-head"><span>夏 · 繁盛</span><span>六个节气</span></div>
+        <div class="st-row"><span class="nm">立夏</span><span class="meta">45° · 约 5 月上</span></div>
+        <div class="st-row"><span class="nm">小满</span><span class="meta">60° · 约 5 月下</span></div>
+        <div class="st-row"><span class="nm">芒种</span><span class="meta">75° · 约 6 月上</span></div>
+        <div class="st-row"><span class="nm">夏至</span><span class="meta">90° · 约 6 月下</span></div>
+        <div class="st-row"><span class="nm">小暑</span><span class="meta">105° · 约 7 月上</span></div>
+        <div class="st-row"><span class="nm">大暑</span><span class="meta">120° · 约 7 月下</span></div>
+      </div>
+      <div class="st-group st-au">
+        <div class="st-head"><span>秋 · 收成</span><span>六个节气</span></div>
+        <div class="st-row"><span class="nm">立秋</span><span class="meta">135° · 约 8 月上</span></div>
+        <div class="st-row"><span class="nm">处暑</span><span class="meta">150° · 约 8 月下</span></div>
+        <div class="st-row"><span class="nm">白露</span><span class="meta">165° · 约 9 月上</span></div>
+        <div class="st-row"><span class="nm">秋分</span><span class="meta">180° · 约 9 月下</span></div>
+        <div class="st-row"><span class="nm">寒露</span><span class="meta">195° · 约 10 月上</span></div>
+        <div class="st-row"><span class="nm">霜降</span><span class="meta">210° · 约 10 月下</span></div>
+      </div>
+      <div class="st-group st-wi">
+        <div class="st-head"><span>冬 · 收藏</span><span>六个节气</span></div>
+        <div class="st-row"><span class="nm">立冬</span><span class="meta">225° · 约 11 月上</span></div>
+        <div class="st-row"><span class="nm">小雪</span><span class="meta">240° · 约 11 月下</span></div>
+        <div class="st-row"><span class="nm">大雪</span><span class="meta">255° · 约 12 月上</span></div>
+        <div class="st-row"><span class="nm">冬至</span><span class="meta">270° · 约 12 月下</span></div>
+        <div class="st-row"><span class="nm">小寒</span><span class="meta">285° · 约 1 月上</span></div>
+        <div class="st-row"><span class="nm">大寒</span><span class="meta">300° · 约 1 月下</span></div>
+      </div>
     </div>
-    <p class="timeline-line">西汉《淮南子》已完整记载二十四节气名称 → 汉代《太初历》将节气纳入历法体系 → 2016 年列入人类非遗名录。</p>
+    <p class="note-line">注：节气日期由太阳黄经决定，每年在公历上相差 1–2 天；秋分恰在黄经 180°，是昼夜平分的“天文学时刻”。</p>
 
     <div class="inset-box">
       <span class="inset-flag">实践印记 · 观象</span>
@@ -131,20 +180,19 @@
     <p class="kicker">叁 / WEATHER —— 节气与气象物候</p>
     <h2 class="sec-title">节气，是古人写的“气象预报”</h2>
     <p class="lede">没有气象卫星的年代，古人靠两套观测过日子：<strong>看天</strong>（冷暖雨雪）与<strong>看物</strong>（草木虫鸟）。一个节气分三候、五天一候，全年七十二候——候鸟、蝉鸣、花开都被排进了时间表。</p>
-    <div class="table-wrap">
-      <table class="kw">
-        <caption>七十二候撷英：物候里的节气信号</caption>
-        <thead><tr><th>节气</th><th>物候（择一）</th><th>背后的天气含义</th></tr></thead>
-        <tbody>
-          <tr><td>立春</td><td>东风解冻</td><td>东风渐盛，气温由冬转春的起点</td></tr>
-          <tr><td>惊蛰</td><td>桃始华</td><td>回暖加快，春意渐浓</td></tr>
-          <tr><td>清明</td><td>虹始见</td><td>雨水增多，气清景明</td></tr>
-          <tr><td>芒种</td><td>螳螂生</td><td>长江中下游常于此时节前后入梅</td></tr>
-          <tr><td>立秋</td><td>凉风至</td><td>暑热未消，风向已悄悄改变</td></tr>
-          <tr><td>处暑</td><td>禾乃登</td><td>五谷成熟，秋收渐次展开</td></tr>
-          <tr><td>冬至</td><td>水泉动</td><td>阳气初生，而最冷的日子从数九开始</td></tr>
-        </tbody>
-      </table>
+    <div class="fact-strip">
+      <div class="fact"><b>“候”是什么？</b>五日为一候、三候为一气——全年七十二候，是比节气更细的“自然日程表”。</div>
+      <div class="fact"><b>古人看什么？</b>看天（风霜雨雪）、看物（草木虫鸟）、看农（种收时序），三样合起来写“天气”。</div>
+      <div class="fact"><b>怎么看懂下表？</b>每个节气只取一候示例：物候本身，就是天气变化的“现场直播”。</div>
+    </div>
+    <div class="hou-list">
+      <div class="hou"><span class="hou-badge">立春</span><b>东风解冻</b><p>东风渐盛，气温由冬转春的起点</p></div>
+      <div class="hou"><span class="hou-badge">惊蛰</span><b>桃始华</b><p>回暖加快，春意渐浓</p></div>
+      <div class="hou"><span class="hou-badge">清明</span><b>虹始见</b><p>雨水增多，气清景明</p></div>
+      <div class="hou"><span class="hou-badge">芒种</span><b>螳螂生</b><p>长江中下游常于此时节前后入梅</p></div>
+      <div class="hou"><span class="hou-badge">立秋</span><b>凉风至</b><p>暑热未消，风向已悄悄改变</p></div>
+      <div class="hou"><span class="hou-badge">处暑</span><b>禾乃登</b><p>五谷成熟，秋收渐次展开</p></div>
+      <div class="hou"><span class="hou-badge">冬至</span><b>水泉动</b><p>阳气初生，而最冷的日子从数九开始</p></div>
     </div>
     <h3 class="sub-h">江南农谚：节气语言里的“天气经验”</h3>
     <div class="proverbs">

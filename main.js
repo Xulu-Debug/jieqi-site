@@ -80,6 +80,85 @@ document.addEventListener('DOMContentLoaded', function () {
     probe.src = 'img/' + HERO.file;
   }
 
+  /* ======= 节气环（太阳黄经示意图）自动绘制 ======= */
+  const wheel = document.getElementById('solarWheel');
+  if (wheel) {
+    const NS = 'http://www.w3.org/2000/svg';
+    const CX = 170, CY = 170;
+    const ORDER = ['春分','清明','谷雨','立夏','小满','芒种','夏至','小暑','大暑',
+      '立秋','处暑','白露','秋分','寒露','霜降','立冬','小雪','大雪','冬至','小寒',
+      '大寒','立春','雨水','惊蛰'];
+    const LI = { '春分':'#a63a2b','秋分':'#a63a2b','夏至':'#a63a2b','冬至':'#a63a2b',
+      '立春':'#33614c','立夏':'#33614c','立秋':'#33614c','立冬':'#33614c' };
+
+    wheel.setAttribute('viewBox', '0 0 340 340');
+    const g = document.createElementNS(NS, 'g');
+
+    // 轨道
+    const ring1 = document.createElementNS(NS, 'circle');
+    ring1.setAttribute('cx', CX); ring1.setAttribute('cy', CY);
+    ring1.setAttribute('r', 112); ring1.setAttribute('fill', 'none');
+    ring1.setAttribute('stroke', '#b3a98c'); ring1.setAttribute('stroke-width', '1.2');
+    const ring2 = document.createElementNS(NS, 'circle');
+    ring2.setAttribute('cx', CX); ring2.setAttribute('cy', CY);
+    ring2.setAttribute('r', 90); ring2.setAttribute('fill', 'none');
+    ring2.setAttribute('stroke', '#c9bfa6'); ring2.setAttribute('stroke-width', '1');
+    ring2.setAttribute('stroke-dasharray', '3 5');
+    g.appendChild(ring1); g.appendChild(ring2);
+
+    ORDER.forEach(function (name, k) {
+      const deg = k * 15;                       // 春分置顶，顺时针推进
+      const rad = (deg - 90) * Math.PI / 180;
+      const dx = Math.cos(rad), dy = Math.sin(rad);
+      const key = LI[name];
+      const isKey = !!key;
+
+      // 刻度短线
+      const tick = document.createElementNS(NS, 'line');
+      tick.setAttribute('x1', CX + dx * 90); tick.setAttribute('y1', CY + dy * 90);
+      tick.setAttribute('x2', CX + dx * 99); tick.setAttribute('y2', CY + dy * 99);
+      tick.setAttribute('stroke', isKey ? key : '#9c9278');
+      tick.setAttribute('stroke-width', isKey ? 2 : 1);
+      g.appendChild(tick);
+
+      // 圆点
+      const dot = document.createElementNS(NS, 'circle');
+      dot.setAttribute('cx', CX + dx * 105); dot.setAttribute('cy', CY + dy * 105);
+      dot.setAttribute('r', isKey ? 4.4 : 2.6);
+      dot.setAttribute('fill', isKey ? key : '#6b6350');
+      g.appendChild(dot);
+
+      // 名称（水平排布，避免倒置）
+      const tx = CX + dx * 128, ty = CY + dy * 128 + 4;
+      const t = document.createElementNS(NS, 'text');
+      t.setAttribute('x', tx); t.setAttribute('y', ty);
+      t.setAttribute('text-anchor', 'middle');
+      t.setAttribute('font-size', isKey ? '12.5' : '10.5');
+      t.setAttribute('fill', isKey ? key : '#4a4437');
+      t.setAttribute('font-weight', isKey ? '700' : '400');
+      t.textContent = name;
+      g.appendChild(t);
+    });
+
+    // 中心
+    const c1 = document.createElementNS(NS, 'text');
+    c1.setAttribute('x', CX); c1.setAttribute('y', CY - 4);
+    c1.setAttribute('text-anchor', 'middle');
+    c1.setAttribute('font-size', '17');
+    c1.setAttribute('fill', '#262219');
+    c1.setAttribute('font-weight', '700');
+    c1.textContent = '廿四节气';
+    const c2 = document.createElementNS(NS, 'text');
+    c2.setAttribute('x', CX); c2.setAttribute('y', CY + 22);
+    c2.setAttribute('text-anchor', 'middle');
+    c2.setAttribute('font-size', '10');
+    c2.setAttribute('fill', '#837a64');
+    c2.textContent = '黄经每 15° 一节气';
+    g.appendChild(c1); g.appendChild(c2);
+
+    wheel.appendChild(g);
+  }
+
   /* ======= 相册渲染 + 灯箱 ======= */
   const lightbox = document.getElementById('lightbox');
   const lbImg = document.getElementById('lbImg');
