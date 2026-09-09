@@ -282,4 +282,35 @@ document.addEventListener('DOMContentLoaded', function () {
   } else {
     revealTargets.forEach(function (el) { el.classList.add('in'); });
   }
+
+  /* ======= 导航滚动高亮（scrollspy） ======= */
+  const spySections = ['gist', 'origin', 'weather', 'folk', 'today', 'evidence', 'takeaway'];
+  const spyMap = {};
+  spySections.forEach(function (id) {
+    const link = navLinks.querySelector('a[href="#' + id + '"]');
+    if (link) spyMap[id] = link;
+  });
+  if ('IntersectionObserver' in window && Object.keys(spyMap).length) {
+    const spyIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          Object.keys(spyMap).forEach(function (k) { spyMap[k].classList.remove('active'); });
+          const link = spyMap[en.target.id];
+          if (link) link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    spySections.forEach(function (id) {
+      const sec = document.getElementById(id);
+      if (sec) spyIO.observe(sec);
+    });
+  }
+
+  /* ======= 返回顶部按钮 ======= */
+  const toTop = document.getElementById('toTop');
+  if (toTop) {
+    window.addEventListener('scroll', function () {
+      toTop.classList.toggle('show', window.scrollY > 640);
+    }, { passive: true });
+  }
 });
