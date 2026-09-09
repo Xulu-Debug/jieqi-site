@@ -502,6 +502,20 @@ a:focus-visible,button:focus-visible,summary:focus-visible,.fig:focus-visible{
 /* 细节：详情折叠摘要悬停反馈 */
 .tpl summary:hover{background:rgba(51,97,76,.05)}
 
+/* ======= v2.5：导航放大为最新版两倍（大字头条式，桌面端生效） ======= */
+@media (min-width:1021px){
+  .nav-inner{display:block; min-height:152px; padding:16px 30px 6px; text-align:center}
+  .brand{display:inline-flex; align-items:center; justify-content:center; gap:4px;
+    font-size:clamp(28px,2.8vw,38px); letter-spacing:8px; color:var(--ink)}
+  .brand em{font-size:16px; padding:4px 16px; margin-left:10px; letter-spacing:3px}
+  .nav-links{display:flex; justify-content:center; flex-wrap:wrap; align-items:flex-end;
+    gap:clamp(2px,1.4vw,26px); margin-top:12px; padding-bottom:6px}
+  .nav-links a{font-size:clamp(21px,2vw,30px); font-weight:800; letter-spacing:5px;
+    padding:8px 14px 12px}
+  .nav-links a::after{bottom:2px; height:4px}
+}
+section[id], footer[id]{scroll-margin-top:172px}
+
 /* 首屏：照片背景铺满，隐藏矢量山避免叠图 */
 .hero.has-photo{background-size:cover; background-position:center 30%}
 .hero.has-photo .hero-art{display:none}
