@@ -37,10 +37,10 @@ section[id], footer[id]{scroll-margin-top:84px}
   box-shadow:0 2px 14px rgba(60,50,30,.06)}
 .nav-inner{max-width:1140px; margin:0 auto; padding:0 26px; height:78px;
   display:flex; align-items:center; justify-content:space-between; gap:18px}
-.brand{font-family:var(--serif); font-weight:800; letter-spacing:1px; font-size:22px;
+.brand{font-family:var(--serif); font-weight:800; letter-spacing:1.5px; font-size:26px;
   color:var(--ink); white-space:nowrap}
-.brand em{font-style:normal; color:var(--jade); font-size:14px; margin-left:8px;
-  border:1.5px solid var(--jade-soft); padding:3px 12px; border-radius:99px; vertical-align:3px;
+.brand em{font-style:normal; color:var(--jade); font-size:16px; margin-left:10px;
+  border:1.5px solid var(--jade-soft); padding:4px 13px; border-radius:99px; vertical-align:3px;
   letter-spacing:2px; white-space:nowrap}
 .nav-links{display:flex; gap:2px}
 .nav-links a{position:relative; display:block; padding:10px 17px; border-radius:8px;
@@ -54,7 +54,7 @@ section[id], footer[id]{scroll-margin-top:84px}
 .nav-links a.active::after{width:60%}
 .nav-toggle{display:none; flex-direction:column; gap:5px; background:none; border:0; cursor:pointer; padding:8px}
 .nav-toggle span{width:24px; height:2.5px; background:var(--ink); border-radius:2px}
-@media (max-width:1020px){
+@media (max-width:1139px){
   .nav-toggle{display:flex}
   .nav-links{display:none; position:absolute; top:78px; left:0; right:0; flex-direction:column;
     background:var(--paper); border-bottom:1px solid var(--line); padding:10px 26px 18px;
@@ -497,16 +497,16 @@ a:focus-visible,button:focus-visible,summary:focus-visible,.fig:focus-visible{
 @media (prefers-reduced-motion:reduce){.to-top{transition:none}}
 
 /* 移动端汉堡按钮区间距微调 */
-@media (max-width:1020px){.nav-inner{gap:8px}}
+@media (max-width:1139px){.nav-inner{gap:8px}}
 
 /* 细节：详情折叠摘要悬停反馈 */
 .tpl summary:hover{background:rgba(51,97,76,.05)}
 
 /* ======= v2.6：导航大号单行稳定版（≥1140px 生效，窄屏自动回落紧凑模式） ======= */
 @media (min-width:1140px){
-  .nav-inner{height:118px; max-width:1360px}
-  .brand{font-size:clamp(24px,2vw,30px); letter-spacing:3px}
-  .brand em{font-size:14px; padding:3px 13px}
+  .nav-inner{height:118px; max-width:1500px}
+  .brand{font-size:clamp(30px,2.8vw,40px); letter-spacing:3px}
+  .brand em{font-size:19px; padding:5px 18px; margin-left:14px; letter-spacing:3px}
   .nav-links{display:flex; align-items:center; gap:0}
   .nav-links a{font-size:clamp(18px,1.5vw,25px); font-weight:800;
     letter-spacing:2px; padding:10px 12px 14px; white-space:nowrap}
