@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>节气连连看 · 公益未来三下乡</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body { height:100%; }
+  body {
+    font-family:"Microsoft YaHei","微软雅黑","PingFang SC",sans-serif;
+    background:linear-gradient(135deg,#a8e063 0%,#56ab2f 50%,#2ecc71 100%);
+    min-height:100vh; display:flex; flex-direction:column; align-items:center;
+    padding:18px; user-select:none; overflow-x:hidden;
+  }
+  h1 {
+    color:#fff; font-size:clamp(28px,4.5vw,54px); text-shadow:0 3px 8px rgba(0,0,0,.25);
+    letter-spacing:4px; margin-bottom:6px;
+  }
+  .subtitle { color:#eafff0; font-size:clamp(14px,1.8vw,20px); margin-bottom:14px; }
+  .bar {
+    display:flex; gap:14px; align-items:center; flex-wrap:wrap; justify-content:center;
+    background:rgba(255,255,255,.92); padding:12px 22px; border-radius:50px;
+    box-shadow:0 8px 24px rgba(0,0,0,.18); margin-bottom:18px;
+  }
+  .stat { font-size:clamp(16px,2vw,24px); font-weight:bold; color:#2d6a4f; }
+  .stat b { color:#e76f51; font-size:1.15em; }
+  .btn {
+    border:none; cursor:pointer; font-family:inherit; font-weight:bold;
+    background:#ff8c42; color:#fff; padding:12px 26px; border-radius:50px;
+    font-size:clamp(15px,1.8vw,20px); box-shadow:0 5px 0 #d96a20; transition:.1s;
+  }
+  .btn:active { transform:translateY(4px); box-shadow:0 1px 0 #d96a20; }
+  .btn.green { background:#43a047; box-shadow:0 5px 0 #2e7d32; }
+  select {
+    font-family:inherit; font-size:clamp(15px,1.8vw,20px); font-weight:bold;
+    padding:10px 16px; border-radius:50px; border:3px solid #43a047; color:#2d6a4f;
+    background:#fff; cursor:pointer;
+  }
+  #grid {
+    display:grid; gap:clamp(8px,1.2vw,18px); perspective:1000px;
+    width:100%; max-width:1100px;
+  }
+  .card {
+    aspect-ratio:3/4; cursor:pointer; position:relative;
+    transform-style:preserve-3d; transition:transform .45s;
+  }
+  .card.flipped { transform:rotateY(180deg); }
+  .card.matched { transform:rotateY(180deg); }
+  .card.matched .face.back { box-shadow:0 0 0 5px #ffd93d, 0 8px 20px rgba(0,0,0,.2); animation:pop .4s; }
+  @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.12)} 100%{transform:scale(1)} }
+  .face {
+    position:absolute; inset:0; backface-visibility:hidden; border-radius:16px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    box-shadow:0 8px 18px rgba(0,0,0,.2); overflow:hidden;
+  }
+  .face.front {
+    background:linear-gradient(135deg,#ff9a56,#ff6a88); color:#fff;
+  }
+  .face.front .q { font-size:clamp(30px,6vw,72px); }
+  .face.front .t { font-size:clamp(13px,1.6vw,20px); margin-top:6px; letter-spacing:2px; opacity:.95;}
+  .face.back { transform:rotateY(180deg); background:#fff; padding:6px; text-align:center; }
+  .face.back .emoji { font-size:clamp(34px,6.5vw,80px); line-height:1; }
+  .face.back .name {
+    font-size:clamp(22px,4vw,50px); font-weight:900; color:#2d6a4f; margin-top:4px; letter-spacing:2px;
+  }
+  .face.back .desc { font-size:clamp(11px,1.4vw,17px); color:#666; margin-top:6px; padding:0 4px; }
+  .kind-tag {
+    position:absolute; top:6px; left:6px; font-size:clamp(10px,1.2vw,14px);
+    background:#2d6a4f; color:#fff; padding:2px 8px; border-radius:20px;
+  }
+  #win {
+    position:fixed; inset:0; background:rgba(0,0,0,.55); display:none;
+    align-items:center; justify-content:center; z-index:50;
+  }
+  #win .panel {
+    background:#fff; border-radius:28px; padding:40px 50px; text-align:center;
+    box-shadow:0 20px 60px rgba(0,0,0,.4); animation:pop .5s;
+  }
+  #win h2 { font-size:clamp(30px,5vw,56px); color:#e76f51; }
+  #win .stars { font-size:clamp(40px,7vw,80px); margin:14px 0; }
+  #win p { font-size:clamp(18px,2.4vw,28px); color:#2d6a4f; margin-bottom:20px; }
+  .confetti { position:fixed; width:12px; height:12px; top:-20px; z-index:60; pointer-events:none; }
+  .footer { color:#eafff0; margin-top:16px; font-size:clamp(12px,1.4vw,16px); opacity:.9; }
+</style>
+</head>
+<body>
+  <h1>🌿 节气连连看 🌿</h1>
+  <div class="subtitle">翻开两张卡片，把「节气名字」和它的「图画」配成一对！</div>
+
+  <div class="bar">
+    <span class="stat">步数 <b id="moves">0</b></span>
+    <span class="stat">用时 <b id="time">0</b>秒</span>
+    <span class="stat">配对 <b id="pairs">0</b>/<b id="total">0</b></span>
+    <select id="level">
+      <option value="6">简单 · 6对</option>
+      <option value="8" selected>中等 · 8对</option>
+      <option value="12">困难 · 12对</option>
+    </select>
+    <button class="btn green" id="restart">重新开始</button>
+  </div>
+
+  <div id="grid"></div>
+  <div class="footer">公益未来三下乡 · 二十四节气科普小游戏（适合投影大屏集体玩）</div>
+
+  <div id="win">
+    <div class="panel">
+      <h2>🎉 全部配对成功！</h2>
+      <div class="stars" id="stars">⭐⭐⭐</div>
+      <p id="winText"></p>
+      <button class="btn" id="again">再玩一次</button>
+    </div>
+  </div>
+
+<script>
+const JIEQI = [
+  {name:'立春', emoji:'🌱', desc:'万物复苏，春耕开始'},
+  {name:'雨水', emoji:'🌧️', desc:'降雨增多，滋润大地'},
+  {name:'惊蛰', emoji:'⚡', desc:'春雷惊醒冬眠的小虫'},
+  {name:'春分', emoji:'🌸', desc:'昼夜平分，百花盛开'},
+  {name:'清明', emoji:'🍃', desc:'踏青扫墓，柳枝发芽'},
+  {name:'谷雨', emoji:'🌾', desc:'雨生百谷，播种希望'},
+  {name:'立夏', emoji:'☀️', desc:'夏天开始，万物繁茂'},
+  {name:'小满', emoji:'🌿', desc:'麦粒渐满，尚未成熟'},
+  {name:'芒种', emoji:'👨‍🌾', desc:'忙着收麦子、种稻子'},
+  {name:'夏至', emoji:'🌞', desc:'白天最长，荷花盛开'},
+  {name:'小暑', emoji:'🍉', desc:'天气渐热，吃西瓜消暑'},
+  {name:'大暑', emoji:'🔥', desc:'一年最热，避暑纳凉'},
+  {name:'立秋', emoji:'🍂', desc:'秋天开始，暑去凉来'},
+  {name:'处暑', emoji:'🌤️', desc:'暑气消退，秋意渐浓'},
+  {name:'白露', emoji:'💧', desc:'清晨露水凝结发白'},
+  {name:'秋分', emoji:'🌕', desc:'昼夜平分，丰收时节'},
+  {name:'寒露', emoji:'🍁', desc:'露水变凉，枫叶变红'},
+  {name:'霜降', emoji:'❄️', desc:'天气变冷，开始结霜'},
+  {name:'立冬', emoji:'🧣', desc:'冬天开始，添衣保暖'},
+  {name:'小雪', emoji:'🌨️', desc:'开始下雪，大地披银装'},
+  {name:'大雪', emoji:'⛄', desc:'大雪纷飞，堆雪人'},
+  {name:'冬至', emoji:'🥟', desc:'白天最短，吃饺子团圆'},
+  {name:'小寒', emoji:'🧊', desc:'天气寒冷，滴水成冰'},
+  {name:'大寒', emoji:'☃️', desc:'一年最冷，迎接新年'}
+];
+
+// ---- 音效 ----
+let actx;
+function beep(freq, dur, type='sine', vol=0.15){
+  try{
+    actx = actx || new (window.AudioContext||window.webkitAudioContext)();
+    const o = actx.createOscillator(), g = actx.createGain();
+    o.type=type; o.frequency.value=freq; o.connect(g); g.connect(actx.destination);
+    g.gain.setValueAtTime(vol, actx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime+dur);
+    o.start(); o.stop(actx.currentTime+dur);
+  }catch(e){}
+}
+const sFlip = ()=>beep(520,.12,'triangle');
+const sMatch = ()=>{beep(660,.12,'sine');setTimeout(()=>beep(880,.18,'sine'),110);};
+const sMiss = ()=>beep(180,.25,'sawtooth',0.1);
+const sWin = ()=>{[523,659,784,1046].forEach((f,i)=>setTimeout(()=>beep(f,.25,'triangle'),i*150));};
+
+const grid = document.getElementById('grid');
+let first=null, lock=false, moves=0, matched=0, totalPairs=0, timer=null, seconds=0;
+
+function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+function cols(n){ return n<=6?4 : n<=8?4 : 6; }
+
+function start(){
+  clearInterval(timer); seconds=0; moves=0; matched=0; first=null; lock=false;
+  document.getElementById('win').style.display='none';
+  totalPairs = parseInt(document.getElementById('level').value,10);
+  document.getElementById('moves').textContent=0;
+  document.getElementById('time').textContent=0;
+  document.getElementById('pairs').textContent=0;
+  document.getElementById('total').textContent=totalPairs;
+
+  const chosen = shuffle(JIEQI.slice()).slice(0,totalPairs);
+  let cards=[];
+  chosen.forEach(j=>{
+    cards.push({jieqi:j.name, kind:'name', emoji:j.emoji, desc:j.desc});
+    cards.push({jieqi:j.name, kind:'pic',  emoji:j.emoji, desc:j.desc});
+  });
+  cards = shuffle(cards);
+
+  grid.style.gridTemplateColumns = `repeat(${cols(totalPairs)},1fr)`;
+  grid.innerHTML='';
+  cards.forEach(c=>{
+    const el=document.createElement('div');
+    el.className='card'; el.dataset.jieqi=c.jieqi; el.dataset.kind=c.kind;
+    const back = c.kind==='name'
+      ? `<div class="face back"><span class="kind-tag">名字</span><div class="name">${c.jieqi}</div><div class="desc">${c.desc}</div></div>`
+      : `<div class="face back"><span class="kind-tag">图画</span><div class="emoji">${c.emoji}</div><div class="name" style="font-size:clamp(16px,2.6vw,30px)">${c.jieqi}</div></div>`;
+    el.innerHTML = `<div class="face front"><div class="q">❓</div><div class="t">点我翻开</div></div>${back}`;
+    el.addEventListener('click',()=>flip(el));
+    grid.appendChild(el);
+  });
+
+  timer=setInterval(()=>{ seconds++; document.getElementById('time').textContent=seconds; },1000);
+}
+
+function flip(el){
+  if(lock || el.classList.contains('flipped') || el.classList.contains('matched')) return;
+  el.classList.add('flipped'); sFlip();
+  if(!first){ first=el; return; }
+  moves++; document.getElementById('moves').textContent=moves;
+  const a=first, b=el; first=null;
+  if(a.dataset.jieqi===b.dataset.jieqi && a.dataset.kind!==b.dataset.kind){
+    a.classList.add('matched'); b.classList.add('matched');
+    matched++; document.getElementById('pairs').textContent=matched; sMatch();
+    if(matched===totalPairs) finish();
+  }else{
+    lock=true; sMiss();
+    setTimeout(()=>{ a.classList.remove('flipped'); b.classList.remove('flipped'); lock=false; },900);
+  }
+}
+
+function finish(){
+  clearInterval(timer); sWin(); confetti();
+  let stars = moves<=totalPairs+2 ? 3 : moves<=totalPairs*1.8 ? 2 : 1;
+  document.getElementById('stars').textContent = '⭐'.repeat(stars)+'☆'.repeat(3-stars);
+  document.getElementById('winText').textContent = `用时 ${seconds} 秒，共 ${moves} 步完成！`;
+  setTimeout(()=>document.getElementById('win').style.display='flex',600);
+}
+
+function confetti(){
+  const colors=['#ff6a88','#ffd93d','#43a047','#4d96ff','#ff8c42','#a06cd5'];
+  for(let i=0;i<90;i++){
+    const c=document.createElement('div'); c.className='confetti';
+    c.style.left=Math.random()*100+'vw';
+    c.style.background=colors[i%colors.length];
+    c.style.borderRadius=Math.random()>.5?'50%':'2px';
+    document.body.appendChild(c);
+    const dur=2+Math.random()*2;
+    c.animate([{transform:`translateY(0) rotate(0)`},{transform:`translateY(105vh) rotate(${720*Math.random()}deg)`}],
+      {duration:dur*1000,easing:'ease-in'});
+    setTimeout(()=>c.remove(),dur*1000);
+  }
+}
+
+document.getElementById('restart').addEventListener('click',start);
+document.getElementById('again').addEventListener('click',start);
+document.getElementById('level').addEventListener('change',start);
+start();
+</script>
+</body>
+</html>

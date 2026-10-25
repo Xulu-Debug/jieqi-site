@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>成果归档 · 二十四节气社区美育实践｜逐光下乡实践团</title>
+<meta name="description" content="南京信息工程大学逐光下乡实践团「循节气文脉，探天文农智」二十四节气社区美育实践的成果归档：可复用资源包、研学梳理、课堂物料、项目报告、答辩材料与互动小游戏。">
+<style>
+:root{
+  --paper:#f7f2e7; --paper-2:#efe5d2; --card:#fbf7ec;
+  --ink:#262219; --ink-2:#57503f; --ink-3:#837a64;
+  --jade:#33614c; --jade-deep:#244837; --jade-soft:#7d9b86;
+  --seal:#a63a2b; --line:#d9cdb4; --warm:#c9a227;
+  --serif:"Songti SC","Noto Serif CJK SC","Source Han Serif SC",STSong,"SimSun",serif;
+  --sans:"PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Microsoft YaHei",sans-serif;
+  --shadow:0 10px 30px rgba(60,50,30,.10);
+  --radius:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);color:var(--ink);background:var(--paper);line-height:1.75;
+  background-image:radial-gradient(circle at 12% 8%,rgba(201,162,39,.07),transparent 42%),
+                   radial-gradient(circle at 88% 92%,rgba(51,97,76,.08),transparent 46%);}
+a{color:var(--jade);text-decoration:none}
+a:hover{color:var(--seal)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+/* 顶栏 */
+.nav{position:sticky;top:0;z-index:50;background:rgba(247,242,231,.94);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav-inner{max-width:1080px;margin:0 auto;padding:0 24px;height:72px;
+  display:flex;align-items:center;justify-content:space-between}
+.brand{font-family:var(--serif);font-weight:800;font-size:23px;letter-spacing:1.4px;color:var(--ink)}
+.brand em{font-style:normal;color:var(--jade-soft);font-size:14px;margin-left:10px;letter-spacing:1px}
+.nav a.back{font-weight:700;font-size:15px;padding:8px 16px;border-radius:999px;
+  border:1px solid var(--line);background:var(--card);color:var(--ink-2)}
+.nav a.back:hover{border-color:var(--jade);color:var(--jade)}
+
+/* 首屏 */
+.hero{padding:60px 0 34px;border-bottom:1px solid var(--line)}
+.kicker{font-size:13px;letter-spacing:3px;color:var(--warm);font-weight:800}
+h1{font-family:var(--serif);font-size:clamp(32px,4.4vw,48px);line-height:1.25;
+  letter-spacing:2px;margin:12px 0 14px}
+.lead{color:var(--ink-2);font-size:16px;max-width:760px}
+.meta{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px}
+.tag{font-size:13px;padding:5px 13px;border-radius:999px;background:var(--card);
+  border:1px solid var(--line);color:var(--ink-2)}
+
+/* 分区 */
+section{padding:46px 0 6px}
+h2{font-family:var(--serif);font-size:26px;letter-spacing:1.6px;
+  display:flex;align-items:center;gap:12px;margin-bottom:6px}
+h2 .no{font-family:var(--sans);font-size:13px;font-weight:800;color:var(--warm);letter-spacing:2px}
+.sub{color:var(--ink-3);font-size:14px;margin-bottom:22px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px 22px;box-shadow:var(--shadow);transition:.18s;display:flex;flex-direction:column;gap:8px}
+.item:hover{transform:translateY(-2px);border-color:var(--jade-soft)}
+.item .name{font-weight:800;font-size:16.5px;color:var(--ink);display:flex;gap:8px;align-items:baseline}
+.item .name .ext{font-size:11px;font-weight:800;letter-spacing:1px;color:#fff;background:var(--jade-soft);
+  border-radius:4px;padding:2px 6px;flex:none}
+.item .name .ext.pdf{background:var(--seal)}
+.item .name .ext.game{background:var(--warm)}
+.item .desc{font-size:13.6px;color:var(--ink-2)}
+.item .foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;
+  font-size:12.5px;color:var(--ink-3);padding-top:8px;border-top:1px dashed var(--line)}
+.item .foot .go{font-weight:800;color:var(--jade)}
+
+/* 链接条 */
+.links{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.link-card{display:block;background:linear-gradient(180deg,var(--card),#f6efdf);
+  border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow)}
+.link-card .t{font-weight:800;font-size:16px;color:var(--ink)}
+.link-card .u{font-size:12.5px;color:var(--jade);word-break:break-all}
+.link-card:hover{border-color:var(--jade);transform:translateY(-2px)}
+
+/* 说明 */
+.note{margin:44px 0 0;background:rgba(51,97,76,.06);border:1px solid rgba(51,97,76,.22);
+  border-left:5px solid var(--jade);border-radius:var(--radius);padding:20px 24px;font-size:13.8px;color:var(--ink-2)}
+.note b{color:var(--jade-deep)}
+footer{margin-top:46px;padding:30px 0 48px;border-top:1px solid var(--line);
+  font-size:13px;color:var(--ink-3);text-align:center}
+footer a{color:var(--jade)}
+@media(max-width:640px){
+  .nav-inner{height:auto;padding:12px 16px;gap:10px;flex-wrap:wrap}
+  .brand{font-size:18px;letter-spacing:.5px}
+  .brand em{font-size:11px;margin-left:6px;letter-spacing:0}
+  .nav a.back{font-size:13px;padding:6px 12px}
+  .wrap{padding:0 18px}
+  .hero{padding:34px 0 24px}
+  h1{font-size:30px;letter-spacing:1px}
+  .lead{font-size:15px}
+  h2{font-size:21px;letter-spacing:1px}
+  .grid{grid-template-columns:1fr}
+  .item{padding:16px 16px}
+  .item .name{font-size:15.5px;flex-wrap:wrap}
+  .link-card .u{font-size:11.5px}
+  .note{padding:16px 18px;font-size:13px}
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">二十四节气 <em>成果归档</em></a>
+    <a class="back" href="index.html">← 返回首页</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="hero" style="padding-top:52px">
+    <div class="kicker">循节气文脉 · 探天文农智</div>
+    <h1>成果归档</h1>
+    <p class="lead">
+      南京信息工程大学 生态与应用气象学院 逐光下乡实践团，2026 年 8 月 7—13 日于南京市双塘街道玉带园社区开展二十四节气社区美育实践。
+      这里归档了本次实践的全部可复用材料：资源包、研学梳理、课堂物料、调研问卷、项目报告、答辩材料与三个课堂互动小游戏。
+      除特别说明外，代码与文档以 <b>MIT 协议</b> 开放，欢迎后来的团队直接取用、改造。
+    </p>
+    <div class="meta">
+      <span class="tag">7 天实践</span>
+      <span class="tag">5 名队员</span>
+      <span class="tag">25 位居民访谈</span>
+      <span class="tag">20 人美育课堂</span>
+      <span class="tag">指导教师 江晓东</span>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="no">01</span>可复用资源包</h2>
+    <p class="sub">把「我们的做法」写成「你们的模板」——其他团队按自己的情况改一改就能用。</p>
+    <div class="grid">
+      <div class="item">
+        <div class="name"><span class="ext pdf">PDF</span>二十四节气科普实践资源包</div>
+        <div class="desc">10 页：核心资源六项（分层访谈提纲、研学梳理文档、宣讲课件脚本、问卷与记录归档、应急预案、影像摄制脚本）＋ 扩展资源三项 ＋ 成果提交规范。可直接填写使用。</div>
+        <div class="foot"><span>0.9 MB · 10 页</span><a class="go" href="docs/资源包/二十四节气科普实践资源包.pdf">打开 →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="no">02</span>研学与课堂</h2>
+    <p class="sub">从紫金山天文台的溯源，到暑托班的一堂课。</p>
+    <div class="grid">
+      <div class="item">
+        <div class="name"><span class="ext">DOCX</span>不同时代二十四节气规划演变</div>
+        <div class="desc">紫金山天文台研学梳理：先秦观象萌芽 → 西汉平气定型 → 隋唐定气理论 → 清初定气落地，分清「平气法」与「定气法」两套体系。</div>
+        <div class="foot"><span>834 字 · 14 KB</span><a class="go" href="docs/研学/不同时代二十四节气规划演变.docx">下载 →</a></div>
+      </div>
+      <div class="item">
+        <div class="name"><span class="ext">DOCX</span>社区美育活动具体流程规划</div>
+        <div class="desc">70 分钟课堂全流程：立秋科普视频 → PPT 讲解（含谜语互动）→ 趣味小游戏 → 树叶剪贴手工 → 啃秋吃西瓜 → 反馈问卷。</div>
+        <div class="foot"><span>1630 字 · 17 KB</span><a class="go" href="docs/课堂/社区美育活动具体流程规划.docx">下载 →</a></div>
+      </div>
+      <div class="item">
+        <div class="name"><span class="ext">DOCX</span>《二十四节气与立秋的奇妙之旅》演讲稿</div>
+        <div class="desc">约 11 分钟逐字讲稿，按 PPT 页码标注节奏与提问点，面向社区暑托班 10—12 岁儿童。</div>
+        <div class="foot"><span>3273 字 · 41 KB</span><a class="go" href="docs/课堂/立秋课堂演讲稿.docx">下载 →</a></div>
+      </div>
+      <div class="item">
+        <div class="name"><span class="ext">DOCX</span>问卷 1（成年人群）</div>
+        <div class="desc">「一叶知秋」立秋科普活动调研问卷，匿名、30 秒填完，含节气熟悉度与科普期待。</div>
+        <div class="foot"><span>268 字 · 11 KB</span><a class="go" href="docs/课堂/问卷1-成年人群.docx">下载 →</a></div>
+      </div>
+      <div class="item">
+        <div class="name"><span class="ext">DOC</span>问卷 2（小朋友）</div>
+        <div class="desc">立秋小课堂反馈小问卷，不写名字、勾选即可，含环节喜好与知识小检测。</div>
+        <div class="foot"><span>227 字 · 16 KB</span><a class="go" href="docs/课堂/问卷2-小朋友.doc">下载 →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="no">03</span>互动小游戏（可在线玩）</h2>
+    <p class="sub">课堂上用过的三个纯静态小游戏，双击即可运行，也适合投屏给孩子们玩。</p>
+    <div class="grid">
+      <div class="item">
+        <div class="name"><span class="ext game">GAME</span>节气连连看</div>
+        <div class="desc">把节气与对应的物候、农事、民俗连起来，适合课堂热身。</div>
+        <div class="foot"><span>11 KB · 纯静态</span><a class="go" href="games/lianliankan.html">开始玩 →</a></div>
+      </div>
+      <div class="item">
+        <div class="name"><span class="ext game">GAME</span>节气快快排</div>
+        <div class="desc">按时间顺序快速排列二十四节气，比谁排得又快又准。</div>
+        <div class="foot"><span>15 KB · 纯静态</span><a class="go" href="games/kuaikuaipai.html">开始玩 →</a></div>
+      </div>
+      <div class="item">
+        <div class="name"><span class="ext game">GAME</span>看图猜节气</div>
+        <div class="desc">用文字意象与线索猜节气，考验对物候与习俗的联想。</div>
+        <div class="foot"><span>13 KB · 纯静态</span><a class="go" href="games/kan-tu-cai.html">开始玩 →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="no">04</span>项目报告与答辩材料</h2>
+    <p class="sub">完整的文字与汇报版本，供评审与后来者参考。</p>
+    <div class="grid">
+      <div class="item">
+        <div class="name"><span class="ext">DOCX</span>项目质量报告</div>
+        <div class="desc">正式实践报告（7528 字）：项目背景、活动规划与落实、成效分析、创新亮点、问题与挑战、对策与建议，含量化数据与图表。</div>
+        <div class="foot"><span>7528 字 · 1.5 MB</span><a class="go" href="docs/报告/项目质量报告.docx">下载 →</a></div>
+      </div>
+      <div class="item">
+        <div class="name"><span class="ext">PPTX</span>项目质量报告 PPT（30 页）</div>
+        <div class="desc">完整汇报版：背景 / 目标定位 / 规划实施 / 核心亮点 / 效益分析 / 团队优势 / 发展愿景。</div>
+        <div class="foot"><span>30 页 · 4.0 MB</span><a class="go" href="docs/报告/项目质量报告PPT-30页.pptx">下载 →</a></div>
+      </div>
+      <div class="item">
+        <div class="name"><span class="ext">PPTX</span>答辩 PPT（5 分钟 · 11 页）</div>
+        <div class="desc">答辩精简版，每页备注栏含逐页计时讲稿；含网站直达超链接与二维码。</div>
+        <div class="foot"><span>11 页 · 2.8 MB</span><a class="go" href="docs/答辩/答辩PPT-5分钟.pptx">下载 →</a></div>
+      </div>
+      <div class="item">
+        <div class="name"><span class="ext">MD</span>答辩讲稿（5 分钟逐页计时）</div>
+        <div class="desc">逐页讲稿、时间分配表、预设问答（含「网站开源吗」「样本是否太小」等）。</div>
+        <div class="foot"><span>Markdown · 6 KB</span><a class="go" href="docs/答辩/答辩讲稿-5分钟逐页计时.md">查看 →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="no">05</span>线上入口</h2>
+    <p class="sub">影像与动态内容在这些平台持续可见。</p>
+    <div class="links">
+      <a class="link-card" href="index.html">
+        <div class="t">成果网站（本站）</div>
+        <div class="u">xulu-debug.github.io/jieqi-site</div>
+      </a>
+      <a class="link-card" href="https://b23.tv/mHa8zZe" target="_blank" rel="noopener">
+        <div class="t">B 站 · 实践 Vlog</div>
+        <div class="u">b23.tv/mHa8zZe</div>
+      </a>
+      <a class="link-card" href="https://v.douyin.com/4b6HwhICDcs/" target="_blank" rel="noopener">
+        <div class="t">抖音 · 节气科普短片</div>
+        <div class="u">v.douyin.com/4b6HwhICDcs</div>
+      </a>
+      <a class="link-card" href="https://github.com/Xulu-Debug/jieqi-site" target="_blank" rel="noopener">
+        <div class="t">GitHub 仓库（MIT 开源）</div>
+        <div class="u">github.com/Xulu-Debug/jieqi-site</div>
+      </a>
+    </div>
+  </section>
+
+  <div class="note">
+    <b>关于授权与隐私</b><br>
+    ① 本站代码与文档以 <a href="LICENSE">MIT 协议</a> 开放，可自由使用、修改、再发布，保留版权声明即可；<br>
+    ② <code>img/</code>、<code>video/</code> 内的照片与视频含居民及未成年人肖像，<b>仅授权非商业的公益科普与教学使用</b>，转载或再发布前请取得肖像权人同意（未成年人须经老师或家长同意）；<br>
+    ③ 归档中的访谈与问卷材料均已匿名化处理，不含姓名与联系方式；如需原始素材，请联系团队。
+  </div>
+</div>
+
+<footer>
+  南京信息工程大学 生态与应用气象学院 · 逐光下乡实践团（刘杭、陆旭、钟孝宇、张尔凡、孟夏杰）　|　指导教师 江晓东<br>
+  <a href="index.html">返回成果网站首页</a>　·　<a href="https://github.com/Xulu-Debug/jieqi-site">GitHub 仓库</a>　·　代码与文档以 MIT 协议开放
+</footer>
+
+</body>
+</html>

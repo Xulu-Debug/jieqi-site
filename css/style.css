@@ -531,3 +531,23 @@ section[id], footer[id]{scroll-margin-top:134px}
 .art-summer span{font-family:var(--serif); font-size:58px; color:rgba(255,251,240,.88);
   letter-spacing:2px; text-shadow:0 3px 12px rgba(122,60,8,.4)}
 .folk-cards .card h3{margin-top:2px}
+
+/* ===== 成果归档入口（归档页 archive.html） ===== */
+.nav-links a.nav-archive{
+  font-size:clamp(14px,1.05vw,18px);
+  font-weight:800;
+  color:#8a6b1c;
+  background:rgba(201,162,39,.15);
+  border:1px solid rgba(201,162,39,.55);
+  border-radius:999px;
+  padding:6px 16px;
+  margin-left:12px;
+  white-space:nowrap;
+}
+.nav-links a.nav-archive::after{display:none}
+.nav-links a.nav-archive:hover,
+.nav-links a.nav-archive.active{background:rgba(201,162,39,.32); color:#5e4413}
+@media(max-width:1139px){
+  .nav-links a.nav-archive{margin-left:0; margin-top:6px; text-align:center; align-self:flex-start}
+}
+

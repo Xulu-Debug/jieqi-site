@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>看图猜节气 · 公益未来三下乡</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ height:100%; }
+  body{
+    font-family:"Microsoft YaHei","微软雅黑","PingFang SC",sans-serif;
+    background:linear-gradient(135deg,#ff9a56 0%,#ff6a88 55%,#ff99ac 100%);
+    min-height:100vh; display:flex; flex-direction:column; align-items:center;
+    padding:18px; user-select:none; overflow-x:hidden;
+  }
+  h1{ color:#fff; font-size:clamp(28px,4.5vw,54px); text-shadow:0 3px 8px rgba(0,0,0,.25); letter-spacing:4px; }
+  .subtitle{ color:#fff6f0; font-size:clamp(14px,1.8vw,20px); margin:6px 0 14px; }
+  .bar{ display:flex; gap:18px; align-items:center; flex-wrap:wrap; justify-content:center;
+    background:rgba(255,255,255,.94); padding:12px 26px; border-radius:50px;
+    box-shadow:0 8px 24px rgba(0,0,0,.2); margin-bottom:16px; }
+  .stat{ font-size:clamp(16px,2vw,24px); font-weight:bold; color:#c1121f; }
+  .stat b{ color:#e85d04; font-size:1.15em; }
+  .btn{ border:none; cursor:pointer; font-family:inherit; font-weight:bold; background:#e85d04; color:#fff;
+    padding:12px 28px; border-radius:50px; font-size:clamp(15px,1.8vw,20px); box-shadow:0 5px 0 #b54708; transition:.1s; }
+  .btn:active{ transform:translateY(4px); box-shadow:0 1px 0 #b54708; }
+  .btn.hint{ background:#ffb703; box-shadow:0 5px 0 #fb8500; color:#7a3e00; }
+
+  #stage{ width:100%; max-width:1000px; display:flex; flex-direction:column; align-items:center; }
+  #card{ background:#fff; border-radius:30px; padding:26px 34px; text-align:center;
+    box-shadow:0 18px 50px rgba(0,0,0,.28); margin-bottom:18px; width:100%; animation:drop .35s; }
+  @keyframes drop{ from{transform:translateY(-40px) scale(.9);opacity:0} to{transform:none;opacity:1} }
+  #card .emoji{ font-size:clamp(70px,15vw,170px); line-height:1; }
+  #card .ask{ font-size:clamp(20px,3vw,32px); color:#c1121f; font-weight:bold; margin-top:8px; }
+  #hintBox{ min-height:clamp(30px,4vw,46px); margin-top:12px; font-size:clamp(18px,2.8vw,30px);
+    color:#6a4a00; background:#fff3d6; border-radius:16px; padding:10px 16px; display:none; }
+  #hintBox.show{ display:block; animation:drop .3s; }
+
+  #options{ display:grid; grid-template-columns:repeat(2,1fr); gap:clamp(12px,2vw,26px); width:100%; max-width:820px; }
+  .opt{ border:none; cursor:pointer; font-family:inherit; border-radius:22px; padding:clamp(18px,3vw,34px) 10px;
+    background:#fff; color:#c1121f; font-weight:900; font-size:clamp(26px,4.6vw,52px); letter-spacing:3px;
+    box-shadow:0 8px 0 rgba(0,0,0,.18); transition:.1s; }
+  .opt:active{ transform:translateY(6px); box-shadow:0 2px 0 rgba(0,0,0,.18); }
+  .opt.right{ background:#06d6a0; color:#fff; outline:6px solid #04a87d; }
+  .opt.wrong{ background:#ef476f; color:#fff; animation:shake .4s; }
+  @keyframes shake{ 0%,100%{transform:translateX(0)} 25%{transform:translateX(-10px)} 75%{transform:translateX(10px)} }
+  .opt:disabled{ cursor:default; }
+
+  #feedback{ height:clamp(30px,5vw,54px); font-size:clamp(22px,4vw,46px); font-weight:900; margin:14px 0; color:#fff; text-shadow:0 2px 6px rgba(0,0,0,.3); }
+  #start{ text-align:center; }
+  #start p{ color:#fff6f0; font-size:clamp(16px,2.2vw,24px); margin:10px 0 20px; line-height:1.7; }
+
+  #over{ position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; z-index:50; }
+  #over .panel{ background:#fff; border-radius:28px; padding:40px 50px; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.4); animation:drop .4s; }
+  #over h2{ font-size:clamp(30px,5vw,56px); color:#e85d04; }
+  #over .score{ font-size:clamp(40px,8vw,84px); font-weight:900; color:#c1121f; margin:10px 0; }
+  #over .rank{ font-size:clamp(22px,3.5vw,38px); color:#7a3e00; margin-bottom:20px; }
+  .confetti{ position:fixed; width:12px; height:12px; top:-20px; z-index:60; pointer-events:none; }
+  .footer{ color:#fff6f0; margin-top:16px; font-size:clamp(12px,1.4vw,16px); opacity:.9; }
+</style>
+</head>
+<body>
+  <h1>🔍 看图猜节气 🔍</h1>
+  <div class="subtitle">看图画、听描述，抢着猜猜这是哪个节气！提示用得越少，分数越高！</div>
+
+  <div class="bar">
+    <span class="stat">第 <b id="round">0</b>/<b id="rounds">10</b> 题</span>
+    <span class="stat">得分 <b id="score">0</b></span>
+    <span class="stat">连对 <b id="streak">0</b>🔥</span>
+    <button class="btn" id="restart">重新开始</button>
+  </div>
+
+  <div id="stage">
+    <div id="start">
+      <p>规则：一共 10 题。先看图画，再听老师念描述，<br>小朋友们抢答这是哪个节气，点对应的名字！<br>实在猜不出，可以点「💡 看提示」，但会少一点分哦～</p>
+      <button class="btn" id="startBtn" style="font-size:clamp(20px,3vw,32px);padding:16px 44px;">开始抢答 🔔</button>
+    </div>
+
+    <div id="play" style="display:none;width:100%;flex-direction:column;align-items:center;">
+      <div id="card">
+        <div class="emoji" id="cEmoji">🌸</div>
+        <div class="ask">🤔 这是哪个节气？</div>
+        <div id="hintBox"></div>
+        <div style="margin-top:14px;"><button class="btn hint" id="hintBtn">💡 看提示</button></div>
+      </div>
+      <div id="feedback"></div>
+      <div id="options"></div>
+    </div>
+  </div>
+  <div class="footer">公益未来三下乡 · 二十四节气科普小游戏（适合投影大屏集体玩）</div>
+
+  <div id="over">
+    <div class="panel">
+      <h2>🏁 抢答结束！</h2>
+      <div class="score" id="finalScore">0</div>
+      <div class="rank" id="rank"></div>
+      <button class="btn" id="again">再来一轮 🔔</button>
+    </div>
+  </div>
+
+<script>
+const JIEQI = [
+  {name:'立春', season:'春', emoji:'🌱', riddle:'东风解冻，春天的大门刚刚打开。'},
+  {name:'雨水', season:'春', emoji:'🌧️', riddle:'冰雪融化，春雨沙沙地下起来。'},
+  {name:'惊蛰', season:'春', emoji:'⚡', riddle:'一声春雷，把冬眠的小虫都叫醒了。'},
+  {name:'春分', season:'春', emoji:'🌸', riddle:'这一天白天和黑夜一样长，百花齐放。'},
+  {name:'清明', season:'春', emoji:'🍃', riddle:'人们踏青、放风筝，柳枝冒出嫩芽。'},
+  {name:'谷雨', season:'春', emoji:'🌾', riddle:'雨水浇灌田地，是播种的好时候。'},
+  {name:'立夏', season:'夏', emoji:'☀️', riddle:'天气暖了，夏天悄悄来到身边。'},
+  {name:'小满', season:'夏', emoji:'🌿', riddle:'田里的麦粒鼓起来，却还没有成熟。'},
+  {name:'芒种', season:'夏', emoji:'👨‍🌾', riddle:'农民伯伯忙着收麦子、插秧苗。'},
+  {name:'夏至', season:'夏', emoji:'🌞', riddle:'一年里白天最长的一天，荷花开了。'},
+  {name:'小暑', season:'夏', emoji:'🍉', riddle:'天气越来越热，吃块西瓜真凉快。'},
+  {name:'大暑', season:'夏', emoji:'🔥', riddle:'一年中最热的时候，知了叫个不停。'},
+  {name:'立秋', season:'秋', emoji:'🍂', riddle:'第一片落叶飘下，夏天就要走了。'},
+  {name:'处暑', season:'秋', emoji:'🌤️', riddle:'炎热的暑气慢慢退去，秋天来了。'},
+  {name:'白露', season:'秋', emoji:'💧', riddle:'清晨的小草上，挂着白白的小水珠。'},
+  {name:'秋分', season:'秋', emoji:'🌕', riddle:'又是昼夜平分，田野里一片丰收。'},
+  {name:'寒露', season:'秋', emoji:'🍁', riddle:'露水变得冰凉，枫叶染红了山。'},
+  {name:'霜降', season:'秋', emoji:'❄️', riddle:'天气更冷了，地上结了一层白霜。'},
+  {name:'立冬', season:'冬', emoji:'🧣', riddle:'冬天来了，人们穿上了厚棉衣。'},
+  {name:'小雪', season:'冬', emoji:'🌨️', riddle:'天空飘下第一片雪花。'},
+  {name:'大雪', season:'冬', emoji:'⛄', riddle:'雪花纷纷扬扬，可以堆雪人啦。'},
+  {name:'冬至', season:'冬', emoji:'🥟', riddle:'一年里白天最短，家家户户吃饺子。'},
+  {name:'小寒', season:'冬', emoji:'🧊', riddle:'滴水成冰，冷得直哆嗦。'},
+  {name:'大寒', season:'冬', emoji:'☃️', riddle:'一年中最冷的时候，新年快到了。'}
+];
+
+let actx;
+function beep(freq,dur,type='sine',vol=0.15){
+  try{ actx=actx||new(window.AudioContext||window.webkitAudioContext)();
+    const o=actx.createOscillator(),g=actx.createGain(); o.type=type;o.frequency.value=freq;
+    o.connect(g);g.connect(actx.destination); g.gain.setValueAtTime(vol,actx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+dur); o.start();o.stop(actx.currentTime+dur);
+  }catch(e){}
+}
+const sRight=()=>{beep(700,.1);setTimeout(()=>beep(1050,.16),90);};
+const sWrong=()=>beep(160,.3,'sawtooth',0.12);
+const sHint=()=>beep(880,.08,'triangle',0.1);
+const sOver=()=>{[523,659,784,1046,1318].forEach((f,i)=>setTimeout(()=>beep(f,.25,'triangle'),i*140));};
+
+const TOTAL=10;
+let queue=[], idx=0, score=0, streak=0, current=null, hintUsed=false, answered=false;
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function start(){
+  score=0; streak=0; idx=0;
+  queue=shuffle(JIEQI.slice()).slice(0,TOTAL);
+  document.getElementById('rounds').textContent=TOTAL;
+  document.getElementById('score').textContent=0;
+  document.getElementById('streak').textContent=0;
+  document.getElementById('over').style.display='none';
+  document.getElementById('start').style.display='none';
+  document.getElementById('play').style.display='flex';
+  nextRound();
+}
+
+function makeOptions(correct){
+  // 优先同季节干扰项，再补足
+  let pool=JIEQI.filter(j=>j.name!==correct.name && j.season===correct.season).map(j=>j.name);
+  pool=shuffle(pool);
+  const others=JIEQI.filter(j=>j.name!==correct.name && j.season!==correct.season).map(j=>j.name);
+  shuffle(others);
+  let opts=[correct.name, ...pool, ...others];
+  opts=opts.slice(0,4);
+  while(opts.length<4){ opts.push(others[opts.length]); }
+  return shuffle(opts);
+}
+
+function nextRound(){
+  if(idx>=TOTAL) return finish();
+  idx++; answered=false; hintUsed=false;
+  document.getElementById('round').textContent=idx;
+  document.getElementById('feedback').textContent='';
+  const hb=document.getElementById('hintBox'); hb.classList.remove('show'); hb.textContent='';
+  document.getElementById('hintBtn').disabled=false;
+  current=queue[idx-1];
+  document.getElementById('cEmoji').textContent=current.emoji;
+  const card=document.getElementById('card'); card.style.animation='none'; void card.offsetWidth; card.style.animation='drop .35s';
+  const box=document.getElementById('options'); box.innerHTML='';
+  makeOptions(current).forEach(name=>{
+    const b=document.createElement('button'); b.className='opt'; b.textContent=name;
+    b.addEventListener('click',()=>answer(name,b)); box.appendChild(b);
+  });
+}
+
+document.getElementById('hintBtn').addEventListener('click',()=>{
+  if(answered||hintUsed) return; hintUsed=true; sHint();
+  const hb=document.getElementById('hintBox');
+  hb.textContent='💡 提示：'+current.riddle; hb.classList.add('show');
+  document.getElementById('hintBtn').disabled=true;
+});
+
+function answer(name,btn){
+  if(answered) return; answered=true;
+  document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+  const correct = name===current.name;
+  const correctBtn=[...document.querySelectorAll('.opt')].find(b=>b.textContent===current.name);
+  if(correct){
+    btn.classList.add('right'); sRight(); streak++;
+    let gain = hintUsed?60:120;
+    gain += Math.min(streak-1,5)*15; // 连对奖励
+    score+=gain;
+    document.getElementById('feedback').textContent=`🎉 答对啦！这就是「${current.name}」 +${gain}分`;
+  }else{
+    btn.classList.add('wrong'); correctBtn.classList.add('right'); sWrong(); streak=0;
+    document.getElementById('feedback').textContent=`😅 正确答案是「${current.name}」`;
+  }
+  document.getElementById('score').textContent=score;
+  document.getElementById('streak').textContent=streak;
+  setTimeout(nextRound,1700);
+}
+
+function finish(){
+  sOver(); confetti();
+  document.getElementById('finalScore').textContent=score;
+  let rank;
+  if(score>=1100) rank='🌟 节气小博士，名不虚传！';
+  else if(score>=750) rank='👍 节气小达人，真棒！';
+  else if(score>=400) rank='😊 很不错，继续加油！';
+  else rank='💪 多玩几次，你会更厉害！';
+  document.getElementById('rank').textContent=rank;
+  document.getElementById('over').style.display='flex';
+}
+
+function confetti(){
+  const colors=['#e85d04','#ffb703','#06d6a0','#4d96ff','#ef476f','#a06cd5'];
+  for(let i=0;i<90;i++){
+    const c=document.createElement('div');c.className='confetti';
+    c.style.left=Math.random()*100+'vw'; c.style.background=colors[i%colors.length];
+    c.style.borderRadius=Math.random()>.5?'50%':'2px'; document.body.appendChild(c);
+    const dur=2+Math.random()*2;
+    c.animate([{transform:'translateY(0) rotate(0)'},{transform:`translateY(105vh) rotate(${720*Math.random()}deg)`}],{duration:dur*1000,easing:'ease-in'});
+    setTimeout(()=>c.remove(),dur*1000);
+  }
+}
+
+document.getElementById('startBtn').addEventListener('click',start);
+document.getElementById('restart').addEventListener('click',start);
+document.getElementById('again').addEventListener('click',start);
+</script>
+</body>
+</html>

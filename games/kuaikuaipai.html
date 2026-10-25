@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>节气快快排 · 公益未来三下乡</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ height:100%; }
+  body{
+    font-family:"Microsoft YaHei","微软雅黑","PingFang SC",sans-serif;
+    background:linear-gradient(135deg,#4d96ff,#6a5acd 60%,#8e2de2);
+    min-height:100vh; display:flex; flex-direction:column; align-items:center;
+    padding:18px; user-select:none; overflow-x:hidden;
+  }
+  h1{ color:#fff; font-size:clamp(28px,4.5vw,54px); text-shadow:0 3px 8px rgba(0,0,0,.3); letter-spacing:4px; }
+  .subtitle{ color:#eaf2ff; font-size:clamp(14px,1.8vw,20px); margin:6px 0 14px; }
+  .bar{
+    display:flex; gap:18px; align-items:center; flex-wrap:wrap; justify-content:center;
+    background:rgba(255,255,255,.94); padding:12px 26px; border-radius:50px;
+    box-shadow:0 8px 24px rgba(0,0,0,.2); margin-bottom:16px;
+  }
+  .stat{ font-size:clamp(16px,2vw,24px); font-weight:bold; color:#3a0ca3; }
+  .stat b{ color:#f72585; font-size:1.15em; }
+  .btn{
+    border:none; cursor:pointer; font-family:inherit; font-weight:bold;
+    background:#f72585; color:#fff; padding:12px 28px; border-radius:50px;
+    font-size:clamp(15px,1.8vw,20px); box-shadow:0 5px 0 #b5179e; transition:.1s;
+  }
+  .btn:active{ transform:translateY(4px); box-shadow:0 1px 0 #b5179e; }
+  select{ font-family:inherit; font-size:clamp(15px,1.8vw,20px); font-weight:bold; padding:10px 16px;
+    border-radius:50px; border:3px solid #7209b7; color:#3a0ca3; background:#fff; cursor:pointer; }
+
+  #stage{ width:100%; max-width:1000px; display:flex; flex-direction:column; align-items:center; }
+  #timebar{ width:100%; max-width:760px; height:22px; background:rgba(255,255,255,.3);
+    border-radius:20px; overflow:hidden; margin-bottom:18px; }
+  #timefill{ height:100%; width:100%; background:linear-gradient(90deg,#06d6a0,#ffd93d,#f72585); transition:width .1s linear; }
+
+  #card{
+    background:#fff; border-radius:30px; padding:30px 40px; text-align:center;
+    box-shadow:0 18px 50px rgba(0,0,0,.3); margin-bottom:26px; min-width:min(70vw,460px);
+    animation:drop .35s;
+  }
+  @keyframes drop{ from{transform:translateY(-40px) scale(.9);opacity:0} to{transform:none;opacity:1} }
+  #card .emoji{ font-size:clamp(60px,12vw,140px); line-height:1; }
+  #card .name{ font-size:clamp(40px,8vw,90px); font-weight:900; color:#3a0ca3; letter-spacing:4px; margin-top:6px; }
+  #card .desc{ font-size:clamp(16px,2.4vw,26px); color:#666; margin-top:8px; }
+  #card .ask{ font-size:clamp(18px,2.6vw,28px); color:#f72585; font-weight:bold; margin-top:14px; }
+
+  #seasons{ display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(10px,2vw,26px); width:100%; max-width:900px; }
+  .season{
+    border:none; cursor:pointer; font-family:inherit; border-radius:24px; padding:22px 10px;
+    color:#fff; font-weight:900; box-shadow:0 8px 0 rgba(0,0,0,.25); transition:.1s;
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+  }
+  .season:active{ transform:translateY(6px); box-shadow:0 2px 0 rgba(0,0,0,.25); }
+  .season .se{ font-size:clamp(40px,7vw,80px); line-height:1; }
+  .season .sn{ font-size:clamp(26px,4.5vw,52px); letter-spacing:4px; }
+  .s-spring{ background:linear-gradient(135deg,#56ab2f,#a8e063); }
+  .s-summer{ background:linear-gradient(135deg,#ff512f,#f09819); }
+  .s-autumn{ background:linear-gradient(135deg,#f7971e,#ffd200); color:#7a4a00; }
+  .s-winter{ background:linear-gradient(135deg,#2193b0,#6dd5ed); }
+  .season.right{ outline:6px solid #06d6a0; }
+  .season.wrong{ outline:6px solid #ef476f; animation:shake .4s; }
+  @keyframes shake{ 0%,100%{transform:translateX(0)} 25%{transform:translateX(-10px)} 75%{transform:translateX(10px)} }
+
+  #feedback{ height:clamp(30px,5vw,54px); font-size:clamp(22px,4vw,46px); font-weight:900; margin:14px 0; color:#fff; text-shadow:0 2px 6px rgba(0,0,0,.3); }
+  #start{ text-align:center; }
+  #start p{ color:#eaf2ff; font-size:clamp(16px,2.2vw,24px); margin:10px 0 20px; line-height:1.6; }
+
+  #over{ position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; z-index:50; }
+  #over .panel{ background:#fff; border-radius:28px; padding:40px 50px; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.4); animation:drop .4s; }
+  #over h2{ font-size:clamp(30px,5vw,56px); color:#7209b7; }
+  #over .score{ font-size:clamp(40px,8vw,84px); font-weight:900; color:#f72585; margin:10px 0; }
+  #over .rank{ font-size:clamp(22px,3.5vw,38px); color:#3a0ca3; margin-bottom:20px; }
+  .confetti{ position:fixed; width:12px; height:12px; top:-20px; z-index:60; pointer-events:none; }
+  .footer{ color:#eaf2ff; margin-top:16px; font-size:clamp(12px,1.4vw,16px); opacity:.9; }
+</style>
+</head>
+<body>
+  <h1>⚡ 节气快快排 ⚡</h1>
+  <div class="subtitle">节气卡片出现啦！快说说它属于哪个季节，点得越快分越高！</div>
+
+  <div class="bar">
+    <span class="stat">第 <b id="round">0</b>/<b id="rounds">10</b> 题</span>
+    <span class="stat">得分 <b id="score">0</b></span>
+    <span class="stat">连击 <b id="combo">0</b>🔥</span>
+    <select id="speed">
+      <option value="6000">慢速 · 6秒</option>
+      <option value="4500" selected>普通 · 4.5秒</option>
+      <option value="3000">快速 · 3秒</option>
+    </select>
+    <button class="btn" id="restart">重新开始</button>
+  </div>
+
+  <div id="stage">
+    <div id="start">
+      <p>规则：一共 10 题，每题出现一个节气。<br>在倒计时结束前，点击它所属的季节（春 / 夏 / 秋 / 冬）。<br>答对又快又能连击，分数更高哦！</p>
+      <button class="btn" id="startBtn" style="font-size:clamp(20px,3vw,32px);padding:16px 44px;">开始挑战 🚀</button>
+    </div>
+
+    <div id="play" style="display:none;width:100%;flex-direction:column;align-items:center;">
+      <div id="timebar"><div id="timefill"></div></div>
+      <div id="card">
+        <div class="emoji" id="cEmoji">🌸</div>
+        <div class="name" id="cName">春分</div>
+        <div class="desc" id="cDesc">昼夜平分，百花盛开</div>
+        <div class="ask">👆 它属于哪个季节？</div>
+      </div>
+      <div id="feedback"></div>
+      <div id="seasons">
+        <button class="season s-spring" data-s="春"><span class="se">🌸</span><span class="sn">春</span></button>
+        <button class="season s-summer" data-s="夏"><span class="se">☀️</span><span class="sn">夏</span></button>
+        <button class="season s-autumn" data-s="秋"><span class="se">🍂</span><span class="sn">秋</span></button>
+        <button class="season s-winter" data-s="冬"><span class="se">❄️</span><span class="sn">冬</span></button>
+      </div>
+    </div>
+  </div>
+  <div class="footer">公益未来三下乡 · 二十四节气科普小游戏（适合投影大屏集体玩）</div>
+
+  <div id="over">
+    <div class="panel">
+      <h2>🏁 挑战结束！</h2>
+      <div class="score" id="finalScore">0</div>
+      <div class="rank" id="rank"></div>
+      <button class="btn" id="again">再来一次 🚀</button>
+    </div>
+  </div>
+
+<script>
+const JIEQI = [
+  {name:'立春', season:'春', emoji:'🌱', desc:'万物复苏，春耕开始'},
+  {name:'雨水', season:'春', emoji:'🌧️', desc:'降雨增多，滋润大地'},
+  {name:'惊蛰', season:'春', emoji:'⚡', desc:'春雷惊醒冬眠的小虫'},
+  {name:'春分', season:'春', emoji:'🌸', desc:'昼夜平分，百花盛开'},
+  {name:'清明', season:'春', emoji:'🍃', desc:'踏青扫墓，柳枝发芽'},
+  {name:'谷雨', season:'春', emoji:'🌾', desc:'雨生百谷，播种希望'},
+  {name:'立夏', season:'夏', emoji:'☀️', desc:'夏天开始，万物繁茂'},
+  {name:'小满', season:'夏', emoji:'🌿', desc:'麦粒渐满，尚未成熟'},
+  {name:'芒种', season:'夏', emoji:'👨‍🌾', desc:'忙着收麦子、种稻子'},
+  {name:'夏至', season:'夏', emoji:'🌞', desc:'白天最长，荷花盛开'},
+  {name:'小暑', season:'夏', emoji:'🍉', desc:'天气渐热，吃西瓜消暑'},
+  {name:'大暑', season:'夏', emoji:'🔥', desc:'一年最热，避暑纳凉'},
+  {name:'立秋', season:'秋', emoji:'🍂', desc:'秋天开始，暑去凉来'},
+  {name:'处暑', season:'秋', emoji:'🌤️', desc:'暑气消退，秋意渐浓'},
+  {name:'白露', season:'秋', emoji:'💧', desc:'清晨露水凝结发白'},
+  {name:'秋分', season:'秋', emoji:'🌕', desc:'昼夜平分，丰收时节'},
+  {name:'寒露', season:'秋', emoji:'🍁', desc:'露水变凉，枫叶变红'},
+  {name:'霜降', season:'秋', emoji:'❄️', desc:'天气变冷，开始结霜'},
+  {name:'立冬', season:'冬', emoji:'🧣', desc:'冬天开始，添衣保暖'},
+  {name:'小雪', season:'冬', emoji:'🌨️', desc:'开始下雪，大地披银装'},
+  {name:'大雪', season:'冬', emoji:'⛄', desc:'大雪纷飞，堆雪人'},
+  {name:'冬至', season:'冬', emoji:'🥟', desc:'白天最短，吃饺子团圆'},
+  {name:'小寒', season:'冬', emoji:'🧊', desc:'天气寒冷，滴水成冰'},
+  {name:'大寒', season:'冬', emoji:'☃️', desc:'一年最冷，迎接新年'}
+];
+const SEASON_NAME={春:'春季',夏:'夏季',秋:'秋季',冬:'冬季'};
+
+let actx;
+function beep(freq,dur,type='sine',vol=0.15){
+  try{ actx=actx||new(window.AudioContext||window.webkitAudioContext)();
+    const o=actx.createOscillator(),g=actx.createGain(); o.type=type;o.frequency.value=freq;
+    o.connect(g);g.connect(actx.destination); g.gain.setValueAtTime(vol,actx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+dur); o.start();o.stop(actx.currentTime+dur);
+  }catch(e){}
+}
+const sRight=()=>{beep(700,.1);setTimeout(()=>beep(1000,.15),90);};
+const sWrong=()=>beep(160,.3,'sawtooth',0.12);
+const sOver=()=>{[523,659,784,1046,1318].forEach((f,i)=>setTimeout(()=>beep(f,.25,'triangle'),i*140));};
+
+const TOTAL=10;
+let queue=[], idx=0, score=0, combo=0, roundTime=4500, current=null, deadline=0, raf=null, answered=false;
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function buildQueue(){
+  // 保证每个季节都有，再随机补足
+  let base=[]; ['春','夏','秋','冬'].forEach(s=>base.push(...JIEQI.filter(j=>j.season===s)));
+  queue = shuffle(base).slice(0,TOTAL);
+  while(queue.length<TOTAL){ queue.push(JIEQI[Math.floor(Math.random()*JIEQI.length)]); }
+  queue = shuffle(queue);
+}
+
+function start(){
+  roundTime=parseInt(document.getElementById('speed').value,10);
+  document.getElementById('rounds').textContent=TOTAL;
+  score=0; combo=0; idx=0; buildQueue();
+  document.getElementById('score').textContent=0;
+  document.getElementById('combo').textContent=0;
+  document.getElementById('over').style.display='none';
+  document.getElementById('start').style.display='none';
+  document.getElementById('play').style.display='flex';
+  nextRound();
+}
+
+function nextRound(){
+  if(idx>=TOTAL){ return finish(); }
+  idx++; answered=false;
+  document.getElementById('round').textContent=idx;
+  document.getElementById('feedback').textContent='';
+  current=queue[idx-1];
+  document.getElementById('cEmoji').textContent=current.emoji;
+  document.getElementById('cName').textContent=current.name;
+  document.getElementById('cDesc').textContent=current.desc;
+  const card=document.getElementById('card'); card.style.animation='none'; void card.offsetWidth; card.style.animation='drop .35s';
+  document.querySelectorAll('.season').forEach(b=>{b.classList.remove('right','wrong');b.disabled=false;});
+  deadline=performance.now()+roundTime;
+  cancelAnimationFrame(raf); tick();
+}
+
+function tick(){
+  const left=deadline-performance.now();
+  const pct=Math.max(0,left/roundTime*100);
+  document.getElementById('timefill').style.width=pct+'%';
+  if(left<=0){ if(!answered) timeUp(); return; }
+  raf=requestAnimationFrame(tick);
+}
+
+function answer(season, btn){
+  if(answered) return; answered=true; cancelAnimationFrame(raf);
+  const left=Math.max(0,deadline-performance.now());
+  const correct = season===current.season;
+  document.querySelectorAll('.season').forEach(b=>b.disabled=true);
+  const correctBtn=document.querySelector(`.season[data-s="${current.season}"]`);
+  if(correct){
+    btn.classList.add('right'); sRight(); combo++;
+    const speedBonus=Math.round(left/roundTime*100);
+    const gain=(100+speedBonus)*(1+Math.min(combo-1,5)*0.2);
+    score+=Math.round(gain);
+    document.getElementById('feedback').textContent=`✅ 答对啦！+${Math.round(gain)} 分`;
+    document.getElementById('feedback').style.color='#aaffcc';
+  }else{
+    btn.classList.add('wrong'); correctBtn.classList.add('right'); sWrong(); combo=0;
+    document.getElementById('feedback').textContent=`❌ 正确答案是「${SEASON_NAME[current.season]}」`;
+    document.getElementById('feedback').style.color='#ffd0d8';
+  }
+  document.getElementById('score').textContent=score;
+  document.getElementById('combo').textContent=combo;
+  setTimeout(nextRound,1400);
+}
+
+function timeUp(){
+  answered=true;
+  const correctBtn=document.querySelector(`.season[data-s="${current.season}"]`);
+  correctBtn.classList.add('right'); combo=0; sWrong();
+  document.getElementById('combo').textContent=0;
+  document.getElementById('feedback').textContent=`⏰ 时间到！它是「${SEASON_NAME[current.season]}」`;
+  document.getElementById('feedback').style.color='#ffe08a';
+  document.querySelectorAll('.season').forEach(b=>b.disabled=true);
+  setTimeout(nextRound,1400);
+}
+
+function finish(){
+  cancelAnimationFrame(raf); sOver(); confetti();
+  document.getElementById('finalScore').textContent=score;
+  let rank;
+  if(score>=1800) rank='🌟 节气小博士，太厉害了！';
+  else if(score>=1200) rank='👍 节气小达人，继续加油！';
+  else if(score>=600) rank='😊 不错哦，多玩几次更棒！';
+  else rank='💪 刚开始，再来一次吧！';
+  document.getElementById('rank').textContent=rank;
+  document.getElementById('over').style.display='flex';
+}
+
+function confetti(){
+  const colors=['#f72585','#ffd93d','#06d6a0','#4d96ff','#ff8c42','#a06cd5'];
+  for(let i=0;i<90;i++){
+    const c=document.createElement('div');c.className='confetti';
+    c.style.left=Math.random()*100+'vw'; c.style.background=colors[i%colors.length];
+    c.style.borderRadius=Math.random()>.5?'50%':'2px'; document.body.appendChild(c);
+    const dur=2+Math.random()*2;
+    c.animate([{transform:'translateY(0) rotate(0)'},{transform:`translateY(105vh) rotate(${720*Math.random()}deg)`}],{duration:dur*1000,easing:'ease-in'});
+    setTimeout(()=>c.remove(),dur*1000);
+  }
+}
+
+document.querySelectorAll('.season').forEach(b=>b.addEventListener('click',()=>answer(b.dataset.s,b)));
+document.getElementById('startBtn').addEventListener('click',start);
+document.getElementById('restart').addEventListener('click',start);
+document.getElementById('again').addEventListener('click',start);
+</script>
+</body>
+</html>
